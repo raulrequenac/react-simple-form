@@ -9,8 +9,10 @@ class App extends React.Component {
     users
   }
 
-  handleAddUser = () => {
-    // receive user and add to state!
+  handleAddUser = (user) => {
+    this.setState({
+      users: [...this.state.users, user]
+    })
   }
 
   render() {

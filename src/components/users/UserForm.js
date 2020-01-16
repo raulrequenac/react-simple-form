@@ -1,30 +1,46 @@
 import React from 'react'
 
 const validators = {
-  name: val => true
+  name: val => val.length > 3
+}
+
+const initialState = {
+  data: {
+    name: ''
+  },
+  errors: {
+    name: false
+  },
+  touch: {
+    name: false
+  }
 }
 
 class UserForm extends React.Component {
-  state = {
-    data: {
-    },
-    errors: {
-    },
-    touch: {
-    }
-  }
+  state = initialState
 
   handleSubmit = (event) => {
-    // call parent function
+    this.props.onAddUser({...this.state.data})
+    this.setState(initialState)
+    event.preventDefault()
   }
 
   handleBlur = (event) => {
-    // means in and out
+    this.setState({
+      touch: {
+        name: true
+      }
+    })
   }
 
   handleChange = (event) => {
-    // use event.target!!
-    // change state.data and state.error ;)
+    this.setState({
+      data: {
+        name: event.target.value
+      }, errors: {
+        name: !validators.name(event.target.value)
+      }
+    })
   }
 
   render() {
@@ -39,15 +55,14 @@ class UserForm extends React.Component {
 
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
               id="name"
               autoComplete="off"
-              // value={}
-              // onBlur={}
-              // onChange={}
+              value={data.name}
+              onBlur={(event) => this.handleBlur(event)}
+              onChange={(event) => this.handleChange(event)}
               placeholder="Name" />
-
-            {errors.name && (
+            {touch.name && errors.name && (
               <div className="invalid-feedback">
                 Must be > 3
               </div>
