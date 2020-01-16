@@ -4,8 +4,8 @@ import UserCard from './UserCard'
 const UsersList = ({ users }) => {
   return (
     <div className="UsersList">
-      {users.map(user => (
-        <UserCard {...user} />
+      {users.map((user, i) => (
+        <UserCard key={i} {...user} />
       ))}
     </div>
   )
